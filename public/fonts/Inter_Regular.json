@@ -1,0 +1,42 @@
+
+{
+  "glyphs": {
+    "₹": {
+      "ha": 600,
+      "x_min": 100,
+      "x_max": 500,
+      "o": "m 135 700 l 135 600 l 235 600 l 235 400 l 135 400 l 135 300 l 235 300 l 235 0 l 365 0 l 365 300 l 465 300 l 465 400 l 365 400 l 365 600 l 465 600 l 465 700 l 135 700 z"
+    }
+  },
+  "familyName": "Inter",
+  "ascender": 800,
+  "descender": -200,
+  "underlinePosition": -100,
+  "underlineThickness": 50,
+  "boundingBox": {
+    "yMin": -200,
+    "xMin": 0,
+    "yMax": 800,
+    "xMax": 600
+  },
+  "resolution": 1000,
+  "original_font_information": {
+    "format": 0,
+    "copyright": "Copyright (c) 2020 The Inter Project Authors (https://github.com/rsms/inter)",
+    "fontFamily": "Inter",
+    "fontSubfamily": "Regular",
+    "uniqueID": "3.19;RSMS;Inter-Regular",
+    "fullName": "Inter Regular",
+    "version": "3.19",
+    "postScriptName": "Inter-Regular",
+    "trademark": "Inter is a trademark of Rasmus Andersson.",
+    "manufacturer": "The Inter Project Authors",
+    "designer": "Rasmus Andersson",
+    "manufacturerURL": "https://github.com/rsms/inter",
+    "designerURL": "https://rsms.me/",
+    "license": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+    "licenseURL": "https://scripts.sil.org/OFL"
+  },
+  "cssFontWeight": "normal",
+  "cssFontStyle": "normal"
+}

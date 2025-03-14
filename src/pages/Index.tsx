@@ -2,12 +2,31 @@
 import React, { useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import Hero from '@/components/home/Hero';
+import Hero3D from '@/components/home/Hero3D';
 import Features from '@/components/home/Features';
 import ChatInterface from '@/components/chatbot/ChatInterface';
 import PortfolioChart from '@/components/portfolio/PortfolioChart';
+import PortfolioRisk3D from '@/components/portfolio/PortfolioRisk3D';
 import ExpenseTracker from '@/components/expenses/ExpenseTracker';
 import NewsFeed from '@/components/news/NewsFeed';
+import { Suspense } from 'react';
+
+// Add a font loader for 3D text
+const FontLoader = () => {
+  useEffect(() => {
+    // Create a directory for fonts if it doesn't exist
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
+  
+  return null;
+};
 
 const Index = () => {
   useEffect(() => {
@@ -17,11 +36,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <FontLoader />
       <Navbar />
       
       <main className="flex-1">
         {/* Hero Section */}
-        <Hero />
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading 3D elements...</div>}>
+          <Hero3D />
+        </Suspense>
         
         {/* Features Section */}
         <Features />
@@ -60,7 +82,13 @@ const Index = () => {
               </p>
             </div>
             
-            <PortfolioChart />
+            <div className="space-y-12">
+              <PortfolioChart />
+              
+              <Suspense fallback={<div className="h-96 flex items-center justify-center">Loading 3D Globe...</div>}>
+                <PortfolioRisk3D />
+              </Suspense>
+            </div>
           </div>
         </section>
         

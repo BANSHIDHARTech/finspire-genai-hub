@@ -1,30 +1,76 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { IndianRupee, Lightbulb, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import Mascot3D from '@/components/3d/Mascot3D';
 
 type MascotPose = 'default' | 'waving' | 'thinking' | 'excited';
 type MascotSize = 'sm' | 'md' | 'lg';
+type MascotStyle = '2d' | '3d';
 
 interface MascotProps {
   pose?: MascotPose;
   size?: MascotSize;
   className?: string;
   speechBubble?: string;
+  style?: MascotStyle;
 }
 
 const Mascot: React.FC<MascotProps> = ({ 
   pose = 'default', 
   size = 'md', 
   className,
-  speechBubble
+  speechBubble,
+  style = '3d'
 }) => {
+  const [showSpeech, setShowSpeech] = useState(!!speechBubble);
+  
+  useEffect(() => {
+    setShowSpeech(!!speechBubble);
+  }, [speechBubble]);
+  
   const sizeClass = {
     sm: 'w-12 h-12',
     md: 'w-20 h-20',
     lg: 'w-32 h-32'
   };
+  
+  const canvasSizeClass = {
+    sm: 'w-16 h-16',
+    md: 'w-28 h-28',
+    lg: 'w-40 h-40'
+  };
 
+  // 3D version of the mascot
+  if (style === '3d') {
+    return (
+      <div className={cn("relative", className)}>
+        {/* Speech bubble */}
+        {speechBubble && (
+          <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-white rounded-2xl p-3 shadow-md border border-navy-100 min-w-40 animate-chat-bubble z-10">
+            <div className="text-sm text-navy-800">{speechBubble}</div>
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-r border-b border-navy-100 rotate-45"></div>
+          </div>
+        )}
+        
+        {/* 3D Mascot */}
+        <div className={cn("relative", canvasSizeClass[size])}>
+          <Canvas shadows>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <Mascot3D 
+              position={[0, 0, 0]} 
+              showSpeechBubble={false} 
+            />
+          </Canvas>
+        </div>
+      </div>
+    );
+  }
+  
+  // Original 2D version
   return (
     <div className={cn("relative", className)}>
       {/* Speech bubble */}
