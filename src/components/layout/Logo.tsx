@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { TrendingUp, MessageSquare, IndianRupee } from 'lucide-react';
 
 interface LogoProps {
   className?: string;
@@ -18,18 +19,33 @@ const Logo = ({ className, textClassName, iconOnly = false }: LogoProps) => {
         className
       )}
     >
-      <div className="relative w-8 h-8">
-        <div className="absolute inset-0 bg-finspire-500 rounded-lg rotate-45 transition-transform group-hover:rotate-0 duration-300"></div>
-        <div className="absolute inset-0 flex items-center justify-center text-white font-bold transition-all">F</div>
+      <div className="relative w-10 h-10 flex items-center justify-center">
+        {/* Base circle with chat bubble */}
+        <div className="absolute inset-0 bg-navy-700 rounded-full transition-transform group-hover:scale-95 duration-300 flex items-center justify-center">
+          <MessageSquare size={16} className="text-white/80" />
+        </div>
+        
+        {/* Middle layer with growing arrow */}
+        <div className="absolute inset-1 bg-gold-400 rounded-full flex items-center justify-center rotate-12 transition-all duration-300 group-hover:rotate-0">
+          <TrendingUp size={14} className="text-navy-900" />
+        </div>
+        
+        {/* Top layer with Rupee symbol */}
+        <div className="absolute inset-2.5 bg-teal-500 rounded-full flex items-center justify-center shadow-sm transition-all duration-300 group-hover:scale-110">
+          <IndianRupee size={14} className="text-white font-bold" />
+        </div>
       </div>
       
       {!iconOnly && (
-        <span className={cn(
-          "font-semibold tracking-tight transition-colors duration-300",
-          textClassName || "text-slate-900"
-        )}>
-          Finspire
-        </span>
+        <div className="flex flex-col items-start">
+          <span className={cn(
+            "font-poppins font-bold text-lg tracking-tight transition-colors duration-300 leading-none",
+            textClassName || "text-navy-800"
+          )}>
+            Finspire
+          </span>
+          <span className="text-xs text-navy-600/70">Financial Wisdom</span>
+        </div>
       )}
     </Link>
   );

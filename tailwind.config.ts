@@ -21,6 +21,7 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ["Inter var", "sans-serif"],
+				poppins: ["Poppins", "sans-serif"],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -65,6 +66,43 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// New brand colors
+				navy: {
+					50: '#eaecf3',
+					100: '#c5cce0',
+					200: '#9faccd',
+					300: '#798cba',
+					400: '#5f73ac',
+					500: '#4a5c95',
+					600: '#3c4a78',
+					700: '#2a3f88', // Main navy
+					800: '#1e2d62',
+					900: '#111a3b',
+				},
+				gold: {
+					50: '#fefbe8',
+					100: '#fff8c2',
+					200: '#ffef89',
+					300: '#ffe34d',
+					400: '#ffd700', // Main gold
+					500: '#e9c400',
+					600: '#c19000',
+					700: '#9a6c00',
+					800: '#7e5700',
+					900: '#6b4800',
+				},
+				teal: {
+					50: '#e4fcf8',
+					100: '#baf4ec',
+					200: '#80ece0',
+					300: '#40e3d3',
+					400: '#00d8c3',
+					500: '#00c9b1', // Main teal 
+					600: '#00a18e',
+					700: '#008174',
+					800: '#00625b',
+					900: '#00514c',
 				},
 				finspire: {
 					50: '#f0f7ff',
@@ -140,7 +178,15 @@ export default {
 					'0%': { transform: 'scale(0)', opacity: '0' },
 					'50%': { transform: 'scale(1.05)', opacity: '0.9' },
 					'100%': { transform: 'scale(1)', opacity: '1' }
-				}
+				},
+				bounce: {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-5px)' }
+				},
+				shine: {
+					'0%': { backgroundPosition: '200% 0' },
+					'100%': { backgroundPosition: '-200% 0' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -154,7 +200,9 @@ export default {
 				'float': 'float 6s ease-in-out infinite',
 				'pulse': 'pulse 2s ease-in-out infinite',
 				'wave': 'wave 1.5s ease-in-out infinite',
-				'chat-bubble': 'chat-bubble 0.3s ease-out forwards'
+				'chat-bubble': 'chat-bubble 0.3s ease-out forwards',
+				'bounce': 'bounce 1s ease-in-out infinite',
+				'shine': 'shine 3s linear infinite',
 			},
 			backdropFilter: {
 				'none': 'none',

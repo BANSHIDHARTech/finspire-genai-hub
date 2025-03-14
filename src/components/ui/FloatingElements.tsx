@@ -17,10 +17,17 @@ const FloatingElements: React.FC = () => {
       const floatDuration = Math.random() * 10 + 10; // 10-20s
       const delay = Math.random() * 5;
       const opacity = Math.random() * 0.15 + 0.05; // 0.05-0.2
-      const shape = Math.floor(Math.random() * 3); // 0, 1, or 2 for different shapes
+      const shape = Math.floor(Math.random() * 4); // 0-3 for different shapes
       
-      // Alternate colors between brand colors
-      const colors = ['#e0effe', '#bae0fd', '#36aaf5'];
+      // Brand colors
+      const colors = [
+        '#2a3f88', // Navy
+        '#ffd700', // Gold
+        '#00c9b1', // Teal
+        '#eaecf3', // Navy 50
+        '#fff8c2', // Gold 50
+        '#e4fcf8', // Teal 50
+      ];
       const color = colors[Math.floor(Math.random() * colors.length)];
       
       let shapeElement;
@@ -63,7 +70,7 @@ const FloatingElements: React.FC = () => {
             }}
           />
         );
-      } else {
+      } else if (shape === 2) {
         // Triangle (using clip-path)
         shapeElement = (
           <div 
@@ -84,6 +91,29 @@ const FloatingElements: React.FC = () => {
               `,
             }}
           />
+        );
+      } else {
+        // Rupee Symbol (using a custom shape)
+        shapeElement = (
+          <div 
+            key={i}
+            className="absolute flex items-center justify-center text-2xl font-bold"
+            style={{
+              width: `${size}px`,
+              height: `${size}px`,
+              left: `${x}%`,
+              top: `${y}%`,
+              color: color,
+              opacity: opacity,
+              transform: 'rotate(0deg)',
+              animation: `
+                float ${floatDuration}s ease-in-out infinite alternate ${delay}s,
+                rotate ${Math.abs(rotationSpeed)}s linear infinite
+              `,
+            }}
+          >
+            ₹
+          </div>
         );
       }
       
