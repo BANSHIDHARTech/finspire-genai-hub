@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, MessageSquare, BarChart3, PieChart, CreditCard, Newspaper } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import FloatingElements from '../ui/FloatingElements';
 
 const Hero = () => {
   const featuresRef = useRef<HTMLDivElement>(null);
@@ -34,18 +35,26 @@ const Hero = () => {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white pointer-events-none z-0"></div>
       
+      {/* 3D Floating elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
+        <FloatingElements />
+      </div>
+      
       {/* Hero content */}
-      <div className="relative pt-32 md:pt-40 pb-20 md:pb-32 px-6 flex-1 flex flex-col z-10">
+      <div className="relative pt-32 md:pt-40 pb-20 md:pb-32 px-6 flex-1 flex flex-col z-20">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col items-center text-center mb-8 md:mb-12">
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-finspire-100 text-finspire-800 text-xs font-medium mb-6 animate-fade-in">
-              <span className="flex h-2 w-2 rounded-full bg-finspire-500 mr-2"></span>
+              <span className="flex h-2 w-2 rounded-full bg-finspire-500 mr-2 animate-pulse"></span>
               Introducing Finspire AI
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 mb-6 max-w-4xl leading-tight md:leading-tight animate-fade-in text-balance">
               Your Personal AI Financial Guide for a 
-              <span className="text-finspire-500"> Smarter Future</span>
+              <span className="text-finspire-500 relative inline-block">
+                <span className="relative z-10"> Smarter Future</span>
+                <span className="absolute bottom-0 left-0 w-full h-3 bg-finspire-200 -z-0 transform -skew-y-1"></span>
+              </span>
             </h1>
             
             <p className="text-lg md:text-xl text-slate-600 max-w-2xl mb-8 animate-fade-in delay-100 text-balance">
@@ -55,9 +64,10 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in delay-200">
               <Button 
                 size="lg" 
-                className="rounded-full px-8 py-6 bg-finspire-500 hover:bg-finspire-600 text-white shadow-md hover:shadow-lg transition-all"
+                className="rounded-full px-8 py-6 bg-finspire-500 hover:bg-finspire-600 text-white shadow-md hover:shadow-lg transition-all group"
               >
-                Get Started <ArrowRight size={16} className="ml-2" />
+                Get Started 
+                <ArrowRight size={16} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
               <Button 
                 size="lg" 
@@ -113,7 +123,7 @@ const Hero = () => {
             {[1, 2, 3, 4, 5].map((i) => (
               <div 
                 key={i} 
-                className="h-6 w-24 bg-slate-200 rounded opacity-50"
+                className="h-6 w-24 bg-slate-200 rounded opacity-50 hover:opacity-80 transition-opacity"
               ></div>
             ))}
           </div>

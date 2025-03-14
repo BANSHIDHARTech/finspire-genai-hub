@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import Logo from './Logo';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -31,36 +32,31 @@ const Navbar = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
         isScrolled 
-          ? "bg-white/80 backdrop-blur-lg border-slate-200/70 py-4" 
+          ? "bg-white/90 backdrop-blur-lg border-slate-200/70 py-4" 
           : "bg-transparent border-transparent py-6"
       )}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link 
-          to="/" 
-          className="flex items-center space-x-2 text-xl font-medium tracking-tight"
-        >
-          <div className="w-8 h-8 rounded-lg bg-finspire-500 flex items-center justify-center text-white font-semibold">F</div>
-          <span className={cn(
+        <Logo 
+          textClassName={cn(
             "transition-colors duration-300",
             isScrolled ? "text-slate-900" : "text-slate-800"
-          )}>
-            Finspire
-          </span>
-        </Link>
+          )}
+        />
 
         <nav className="hidden md:flex items-center space-x-8">
-          {['Chatbot', 'Portfolio', 'Expenses', 'Learn', 'News'].map((item) => (
+          {['Chatbot', 'Portfolio', 'Expenses', 'Learn', 'News'].map((item, index) => (
             <Link
               key={item}
               to={`/${item.toLowerCase()}`}
               className={cn(
-                "text-sm font-medium transition-colors duration-200 relative group",
+                "text-sm font-medium transition-all duration-200 relative group overflow-hidden",
                 isScrolled ? "text-slate-700 hover:text-finspire-600" : "text-slate-700 hover:text-finspire-500"
               )}
+              style={{ animationDelay: `${index * 50}ms` }}
             >
               {item}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-finspire-500 transition-all duration-200 group-hover:w-full" />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-finspire-500 transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
         </nav>
@@ -69,7 +65,7 @@ const Navbar = () => {
           <Button 
             variant="outline" 
             className={cn(
-              "rounded-full px-5",
+              "rounded-full px-5 transition-all duration-300",
               isScrolled 
                 ? "border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-slate-900" 
                 : "border-slate-300/70 text-slate-700 hover:bg-white/20 hover:text-slate-900"
@@ -78,7 +74,7 @@ const Navbar = () => {
             Log in
           </Button>
           <Button 
-            className="rounded-full px-5 bg-finspire-500 hover:bg-finspire-600 text-white shadow-sm transition-all"
+            className="rounded-full px-5 bg-finspire-500 hover:bg-finspire-600 text-white shadow-sm hover:shadow-md transition-all duration-300"
           >
             Get Started
           </Button>
