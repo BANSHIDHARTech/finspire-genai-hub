@@ -1,7 +1,7 @@
 
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, BakeShadows, PerspectiveCamera } from '@react-three/drei';
+import { Environment, PerspectiveCamera } from '@react-three/drei';
 import Logo3D from './Logo3D';
 import Mascot3D from './Mascot3D';
 
@@ -24,7 +24,7 @@ const Scene3D: React.FC<Scene3DProps> = ({
 }) => {
   return (
     <div className={`${className} w-full h-full`}>
-      <Canvas shadows>
+      <Canvas shadows gl={{ powerPreference: 'high-performance', antialias: false }}>
         <PerspectiveCamera makeDefault position={cameraPosition} />
         <Suspense fallback={null}>
           <ambientLight intensity={0.5} />
@@ -41,10 +41,7 @@ const Scene3D: React.FC<Scene3DProps> = ({
           {children}
           
           <Environment preset="city" />
-          <BakeShadows />
         </Suspense>
-        
-        {orbitControls && <OrbitControls />}
       </Canvas>
     </div>
   );

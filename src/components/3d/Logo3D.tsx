@@ -10,9 +10,6 @@ const Logo3D = ({ animate = true }) => {
   const arrowRef = useRef<THREE.Mesh>(null);
   const rupeeRef = useRef<THREE.Group>(null);
   
-  // Animation timing
-  const animationPhase = useRef(0);
-  
   useFrame((state, delta) => {
     if (!animate) return;
     
@@ -20,42 +17,18 @@ const Logo3D = ({ animate = true }) => {
       groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
     }
     
-    if (chatBubbleRef.current && arrowRef.current && rupeeRef.current) {
-      // Update animation phase
-      animationPhase.current += delta * 0.5;
-      
-      // Phase 1: Chat bubble appears
-      if (animationPhase.current < 1) {
-        const progress = Math.min(animationPhase.current, 1);
-        chatBubbleRef.current.scale.set(progress, progress, progress);
-        arrowRef.current.scale.set(0, 0, 0);
-        rupeeRef.current.scale.set(0, 0, 0);
-      } 
-      // Phase 2: Arrow grows
-      else if (animationPhase.current < 2) {
-        const progress = Math.min(animationPhase.current - 1, 1);
-        chatBubbleRef.current.scale.set(1 - progress * 0.5, 1 - progress * 0.5, 1 - progress * 0.5);
-        arrowRef.current.scale.set(progress, progress, progress);
-        rupeeRef.current.scale.set(0, 0, 0);
-      } 
-      // Phase 3: Rupee appears
-      else if (animationPhase.current < 3) {
-        const progress = Math.min(animationPhase.current - 2, 1);
-        arrowRef.current.scale.set(1, 1, 1);
-        rupeeRef.current.scale.set(progress, progress, progress);
-        
-        // Make the rupee float up and down
-        rupeeRef.current.position.y = 0.7 + Math.sin(state.clock.elapsedTime * 2) * 0.1;
-      } 
-      // Phase 4: All elements present, floating animation
-      else {
-        chatBubbleRef.current.rotation.y = Math.sin(state.clock.elapsedTime) * 0.2;
-        arrowRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 1.5) * 0.1;
-        rupeeRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 2) * 0.3;
-        
-        // Make the rupee float up and down
-        rupeeRef.current.position.y = 0.7 + Math.sin(state.clock.elapsedTime * 2) * 0.1;
-      }
+    // Simple animations that won't stress the renderer
+    if (chatBubbleRef.current) {
+      chatBubbleRef.current.scale.setScalar(0.8 + Math.sin(state.clock.elapsedTime) * 0.1);
+    }
+    
+    if (arrowRef.current) {
+      arrowRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 1.5) * 0.1;
+    }
+    
+    if (rupeeRef.current) {
+      rupeeRef.current.rotation.y = Math.sin(state.clock.elapsedTime) * 0.2;
+      rupeeRef.current.position.y = 0.7 + Math.sin(state.clock.elapsedTime) * 0.05;
     }
   });
   
@@ -63,10 +36,10 @@ const Logo3D = ({ animate = true }) => {
     <group ref={groupRef} position={[0, 0, 0]}>
       {/* Chat bubble */}
       <mesh ref={chatBubbleRef} position={[-0.5, 0, 0]}>
-        <sphereGeometry args={[0.6, 32, 32, 0, Math.PI * 2, 0, Math.PI * 0.6]} />
+        <sphereGeometry args={[0.6, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.6]} />
         <meshStandardMaterial color="#2A3F88" roughness={0.3} metalness={0.2} />
         <mesh position={[-0.4, -0.4, 0]}>
-          <sphereGeometry args={[0.2, 16, 16]} />
+          <sphereGeometry args={[0.2, 8, 8]} />
           <meshStandardMaterial color="#2A3F88" roughness={0.3} metalness={0.2} />
         </mesh>
       </mesh>
@@ -84,7 +57,7 @@ const Logo3D = ({ animate = true }) => {
       {/* Rupee symbol */}
       <group ref={rupeeRef} position={[0, 0.5, 0]}>
         <mesh>
-          <cylinderGeometry args={[0.35, 0.35, 0.1, 32]} />
+          <cylinderGeometry args={[0.35, 0.35, 0.1, 16]} />
           <meshStandardMaterial color="#00C9B1" roughness={0.2} metalness={0.5} />
         </mesh>
         <Text3D
@@ -98,13 +71,13 @@ const Logo3D = ({ animate = true }) => {
         </Text3D>
       </group>
       
-      {/* Particles around the logo */}
-      {[...Array(10)].map((_, i) => (
+      {/* Simplified particles - only 5 instead of 10 */}
+      {[...Array(5)].map((_, i) => (
         <mesh 
           key={i} 
           position={[
-            Math.sin(i * Math.PI * 2 / 10) * 1.2,
-            Math.cos(i * Math.PI * 2 / 10) * 1.2,
+            Math.sin(i * Math.PI * 2 / 5) * 1.2,
+            Math.cos(i * Math.PI * 2 / 5) * 1.2,
             0
           ]}
           scale={[0.06, 0.06, 0.06]}
