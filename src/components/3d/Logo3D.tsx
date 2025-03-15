@@ -1,7 +1,7 @@
 
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Text3D, useTexture } from '@react-three/drei';
+import { Text3D } from '@react-three/drei';
 import * as THREE from 'three';
 
 const Logo3D = ({ animate = true }) => {
