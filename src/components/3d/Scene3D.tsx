@@ -26,12 +26,12 @@ const Scene3D: React.FC<Scene3DProps> = ({
     <div className={`${className} w-full h-full`}>
       <Canvas shadows>
         <PerspectiveCamera makeDefault position={cameraPosition} />
-        <Suspense fallback={<mesh><boxGeometry args={[1, 1, 1]} /><meshStandardMaterial color="hotpink" /></mesh>}>
+        <Suspense fallback={null}>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} intensity={1} castShadow />
           
           {showLogo && (
-            <Logo3D animate={true} />
+            <Logo3D />
           )}
           
           {showMascot && (

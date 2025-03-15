@@ -4,11 +4,7 @@ import { useFrame } from '@react-three/fiber';
 import { Text3D, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
-interface Logo3DProps {
-  animate?: boolean;
-}
-
-const Logo3D: React.FC<Logo3DProps> = ({ animate = true }) => {
+const Logo3D = ({ animate = true }) => {
   const groupRef = useRef<THREE.Group>(null);
   const chatBubbleRef = useRef<THREE.Mesh>(null);
   const arrowRef = useRef<THREE.Mesh>(null);
