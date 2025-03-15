@@ -8,7 +8,7 @@ const Logo3D = ({ animate = true }) => {
   const groupRef = useRef<THREE.Group>(null);
   const chatBubbleRef = useRef<THREE.Mesh>(null);
   const arrowRef = useRef<THREE.Mesh>(null);
-  const rupeeRef = useRef<THREE.Mesh>(null);
+  const rupeeRef = useRef<THREE.Group>(null);
   
   // Animation timing
   const animationPhase = useRef(0);
