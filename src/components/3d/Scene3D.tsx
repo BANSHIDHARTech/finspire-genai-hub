@@ -33,14 +33,16 @@ const Scene3D: React.FC<Scene3DProps> = ({
           stencil: false,
           depth: true
         }}
-        dpr={[1, 1.5]} // Limit pixel ratio for better performance
-        performance={{ min: 0.5 }} // Allow performance scaling
+        dpr={[0.5, 1]} // Lower pixel ratio for better performance
+        performance={{ min: 0.1 }} // Allow more aggressive performance scaling
+        frameloop="demand" // Only render when needed
+        style={{ background: '#f8fafc' }} // Ensure background is set in case alpha doesn't work
       >
         <color attach="background" args={['#f8fafc']} />
-        <PerspectiveCamera makeDefault position={cameraPosition} fov={50} />
+        <PerspectiveCamera makeDefault position={cameraPosition} fov={40} />
         <Suspense fallback={null}>
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} intensity={0.8} />
+          <ambientLight intensity={0.3} />
+          <pointLight position={[10, 10, 10]} intensity={0.5} />
           
           {showLogo && (
             <Logo3D />
