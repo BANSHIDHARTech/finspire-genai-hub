@@ -1,21 +1,18 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { TrendingUp, MessageSquare, IndianRupee } from 'lucide-react';
-import { Canvas } from '@react-three/fiber';
-import Logo3D from '@/components/3d/Logo3D';
 
 interface LogoProps {
   className?: string;
   textClassName?: string;
   iconOnly?: boolean;
-  use3D?: boolean;
+  use3D?: boolean; // Keeping this prop for API compatibility, but ignoring its functionality
 }
 
-const Logo = ({ className, textClassName, iconOnly = false, use3D = false }: LogoProps) => {
-  // Remove 3D loading state - just use 2D for better stability
-  // Always use the 2D version for better performance
+const Logo = ({ className, textClassName, iconOnly = false }: LogoProps) => {
+  // Always use the 2D version for better stability and performance
   return (
     <Link 
       to="/" 

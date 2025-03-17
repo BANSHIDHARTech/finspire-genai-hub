@@ -64,9 +64,16 @@ const Scene3D: React.FC<Scene3DProps> = ({
     }
   };
 
-  const handleError = (error: Error) => {
-    console.error("Error in 3D scene:", error);
-    setIs3DSupported(false);
+  const handleError = (error: Error | React.SyntheticEvent) => {
+    // Check if the error is a React event or an actual Error object
+    if (error instanceof Error) {
+      console.error("Error in 3D scene:", error);
+      setIs3DSupported(false);
+    } else {
+      // It's a React event, handle accordingly
+      console.error("React error event in 3D scene", error);
+      setIs3DSupported(false);
+    }
   };
 
   if (!is3DSupported) {
@@ -93,7 +100,6 @@ const Scene3D: React.FC<Scene3DProps> = ({
           frameloop="demand" // Only render when needed
           style={{ background: '#f8fafc' }} 
           onCreated={handleCreated}
-          onError={handleError}
         >
           <color attach="background" args={['#f8fafc']} />
           <PerspectiveCamera makeDefault position={cameraPosition} fov={40} />

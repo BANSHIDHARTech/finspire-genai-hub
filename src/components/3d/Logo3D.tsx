@@ -71,7 +71,7 @@ const Logo3D: React.FC<Logo3DProps> = ({ animate = true }) => {
         <Text
           font="/fonts/Inter_Regular.json"
           position={[-0.15, -0.05, 0.06]}
-          size={0.3}
+          fontSize={0.3}
           height={0.01}
         >
           ₹
