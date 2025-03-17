@@ -14,18 +14,7 @@ interface LogoProps {
 }
 
 const Logo = ({ className, textClassName, iconOnly = false, use3D = false }: LogoProps) => {
-  const [is3DLoaded, setIs3DLoaded] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  
-  useEffect(() => {
-    // Simulate 3D loading - might want to implement a proper loading check
-    const timer = setTimeout(() => {
-      setIs3DLoaded(true);
-    }, 500);
-    
-    return () => clearTimeout(timer);
-  }, []);
-  
+  // Remove 3D loading state - just use 2D for better stability
   // Always use the 2D version for better performance
   return (
     <Link 

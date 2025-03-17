@@ -1,7 +1,7 @@
 
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Sphere, useTexture } from '@react-three/drei';
+import { Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface RiskGlobeProps {
@@ -15,7 +15,7 @@ const RiskGlobe: React.FC<RiskGlobeProps> = ({
 }) => {
   const globeRef = useRef<THREE.Mesh>(null);
   
-  // Create risk zones on the globe
+  // Create risk zones on the globe - simplified for performance
   const riskZones = [
     { color: '#00C9B1', position: [0, 1, 0], size: 0.3, risk: 'low' },    // Low risk - North pole
     { color: '#FFD700', position: [0, 0, 1], size: 0.3, risk: 'medium' },  // Medium risk - Equator
@@ -24,22 +24,23 @@ const RiskGlobe: React.FC<RiskGlobeProps> = ({
   
   useFrame(({ clock }) => {
     if (autoRotate && globeRef.current) {
-      globeRef.current.rotation.y = clock.getElapsedTime() * 0.1;
+      // Slower rotation for stability
+      globeRef.current.rotation.y = clock.getElapsedTime() * 0.05;
     }
     
-    // Highlight the user's risk zone
+    // Highlight the user's risk zone - simplified
     if (globeRef.current) {
       // Find the zone that matches user's risk level
       const userZone = riskZones.find(zone => zone.risk === riskLevel);
       
       if (userZone) {
-        // Rotate to focus on that zone
+        // Less aggressive rotation
         const targetRotation = Math.atan2(userZone.position[0], userZone.position[2]);
-        // Smoothly rotate towards the target
+        // Smoother rotation with less processing
         globeRef.current.rotation.x = THREE.MathUtils.lerp(
           globeRef.current.rotation.x,
-          userZone.position[1] * 0.5,
-          0.01
+          userZone.position[1] * 0.3,
+          0.005
         );
       }
     }
@@ -48,8 +49,8 @@ const RiskGlobe: React.FC<RiskGlobeProps> = ({
   return (
     <group>
       <mesh ref={globeRef}>
-        {/* Base globe */}
-        <sphereGeometry args={[1, 64, 64]} />
+        {/* Base globe - reduced segments */}
+        <sphereGeometry args={[1, 32, 32]} />
         <meshStandardMaterial
           color="#2A3F88"
           roughness={0.6}
@@ -58,8 +59,8 @@ const RiskGlobe: React.FC<RiskGlobeProps> = ({
           transparent={true}
         />
         
-        {/* Grid lines */}
-        <Sphere args={[1.01, 64, 64]}>
+        {/* Grid lines - simplified */}
+        <Sphere args={[1.01, 32, 32]}>
           <meshStandardMaterial
             wireframe={true}
             color="#ffffff"
@@ -68,19 +69,19 @@ const RiskGlobe: React.FC<RiskGlobeProps> = ({
           />
         </Sphere>
         
-        {/* Risk zones */}
+        {/* Risk zones - fewer segments for performance */}
         {riskZones.map((zone, index) => (
           <mesh
             key={index}
             position={[zone.position[0], zone.position[1], zone.position[2]]}
           >
-            <sphereGeometry args={[zone.size, 32, 32]} />
+            <sphereGeometry args={[zone.size, 16, 16]} />
             <meshStandardMaterial
               color={zone.color}
-              roughness={0.3}
-              metalness={0.5}
+              roughness={0.5}
+              metalness={0.3}
               emissive={zone.color}
-              emissiveIntensity={zone.risk === riskLevel ? 0.5 : 0.2}
+              emissiveIntensity={zone.risk === riskLevel ? 0.3 : 0.1}
             />
           </mesh>
         ))}

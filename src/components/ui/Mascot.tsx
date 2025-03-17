@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import Mascot3D from '@/components/3d/Mascot3D';
+import { ErrorBoundary } from 'react-error-boundary';
 
 type MascotPose = 'default' | 'waving' | 'thinking' | 'excited';
 type MascotSize = 'sm' | 'md' | 'lg';
@@ -18,12 +19,15 @@ interface MascotProps {
   style?: MascotStyle;
 }
 
+// Simple fallback for 3D mascot
+const Mascot3DFallback = () => <div className="w-full h-full bg-navy-50 rounded-full"></div>;
+
 const Mascot: React.FC<MascotProps> = ({ 
   pose = 'default', 
   size = 'md', 
   className,
   speechBubble,
-  style = '3d'
+  style = '2d' // Default to 2D for better stability
 }) => {
   const [showSpeech, setShowSpeech] = useState(!!speechBubble);
   
@@ -55,16 +59,28 @@ const Mascot: React.FC<MascotProps> = ({
           </div>
         )}
         
-        {/* 3D Mascot */}
+        {/* 3D Mascot with error boundary */}
         <div className={cn("relative", canvasSizeClass[size])}>
-          <Canvas shadows>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} />
-            <Mascot3D 
-              position={[0, 0, 0]} 
-              showSpeechBubble={false} 
-            />
-          </Canvas>
+          <ErrorBoundary fallback={<Mascot3DFallback />}>
+            <Canvas
+              shadows={false}
+              dpr={[0.6, 1]}
+              gl={{ 
+                powerPreference: 'default',
+                antialias: false,
+                alpha: true,
+                preserveDrawingBuffer: true
+              }}
+              frameloop="demand"
+            >
+              <ambientLight intensity={0.5} />
+              <pointLight position={[10, 10, 10]} />
+              <Mascot3D 
+                position={[0, 0, 0]} 
+                showSpeechBubble={false} 
+              />
+            </Canvas>
+          </ErrorBoundary>
         </div>
       </div>
     );

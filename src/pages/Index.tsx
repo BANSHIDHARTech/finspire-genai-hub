@@ -1,15 +1,39 @@
-
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import Hero3D from '@/components/home/Hero3D';
 import Features from '@/components/home/Features';
 import ChatInterface from '@/components/chatbot/ChatInterface';
 import PortfolioChart from '@/components/portfolio/PortfolioChart';
-import PortfolioRisk3D from '@/components/portfolio/PortfolioRisk3D';
 import ExpenseTracker from '@/components/expenses/ExpenseTracker';
 import NewsFeed from '@/components/news/NewsFeed';
-import { Suspense } from 'react';
+
+// Lazily load 3D components
+const Hero3D = lazy(() => import('@/components/home/Hero3D'));
+const PortfolioRisk3D = lazy(() => import('@/components/portfolio/PortfolioRisk3D'));
+
+// Fallback for 3D components when they fail to load
+const Hero3DFallback = () => (
+  <div className="min-h-[70vh] flex items-center justify-center bg-blue-50">
+    <div className="text-center p-8">
+      <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 mb-6">
+        Your Personal AI Financial Guide
+      </h1>
+      <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
+        Empowering financial literacy through intelligent conversations and practical tools.
+      </p>
+      <button className="px-6 py-3 bg-finspire-500 text-white rounded-full">
+        Get Started
+      </button>
+    </div>
+  </div>
+);
+
+const Portfolio3DFallback = () => (
+  <div className="w-full max-w-5xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
+    <h2 className="text-2xl font-semibold text-slate-900 mb-4">Risk Assessment</h2>
+    <p className="text-slate-600 mb-4">Unable to load 3D visualization. Please try again later.</p>
+  </div>
+);
 
 // Add a font loader for 3D text
 const FontLoader = () => {
@@ -29,9 +53,19 @@ const FontLoader = () => {
 };
 
 const Index = () => {
+  // State to track if 3D content should be shown
+  const [show3D, setShow3D] = useState(false);
+  
   useEffect(() => {
     // Scroll to top on page load
     window.scrollTo(0, 0);
+    
+    // Delay loading 3D content to improve initial page load
+    const timer = setTimeout(() => {
+      setShow3D(true);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -41,8 +75,8 @@ const Index = () => {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading 3D elements...</div>}>
-          <Hero3D />
+        <Suspense fallback={<Hero3DFallback />}>
+          {show3D ? <Hero3D /> : <Hero3DFallback />}
         </Suspense>
         
         {/* Features Section */}
@@ -85,8 +119,8 @@ const Index = () => {
             <div className="space-y-12">
               <PortfolioChart />
               
-              <Suspense fallback={<div className="h-96 flex items-center justify-center">Loading 3D Globe...</div>}>
-                <PortfolioRisk3D />
+              <Suspense fallback={<Portfolio3DFallback />}>
+                {show3D ? <PortfolioRisk3D /> : <Portfolio3DFallback />}
               </Suspense>
             </div>
           </div>
