@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import ChatInterface from "./components/chatbot/ChatInterface";
 
 // Create empty placeholder pages for navigation
 const PlaceholderPage = ({ title }: { title: string }) => (
@@ -30,7 +31,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/chatbot" element={<PlaceholderPage title="AI Chatbot" />} />
+          <Route path="/chatbot" element={<ChatInterface />} />
           <Route path="/portfolio" element={<PlaceholderPage title="Portfolio Tracking" />} />
           <Route path="/expenses" element={<PlaceholderPage title="Expense Management" />} />
           <Route path="/learn" element={<PlaceholderPage title="Learning Resources" />} />
