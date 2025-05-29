@@ -1,12 +1,12 @@
 
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Text, MeshWobbleGeometry } from '@react-three/drei';
+import { Text } from '@react-three/drei';
 import * as THREE from 'three';
 
 const Logo3D = () => {
   const logoRef = useRef<THREE.Group>(null);
-  const textRef = useRef<THREE.Mesh>(null);
+  const textRef = useRef<THREE.Group>(null);
 
   useFrame((state) => {
     if (logoRef.current) {
@@ -21,7 +21,7 @@ const Logo3D = () => {
     <group ref={logoRef} position={[0, 0, 0]}>
       {/* Main navy sphere */}
       <mesh position={[0, 0, 0]}>
-        <MeshWobbleGeometry args={[0.8, 64, 64]} factor={0.1} speed={1} />
+        <sphereGeometry args={[0.8, 64, 64]} />
         <meshStandardMaterial color="#2a3f88" />
       </mesh>
       

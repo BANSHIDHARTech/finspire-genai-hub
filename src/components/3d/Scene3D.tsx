@@ -108,7 +108,7 @@ const Scene3D: React.FC<Scene3DProps> = ({
             <pointLight position={[10, 10, 10]} intensity={0.5} />
             
             {showLogo && (
-              <Logo3D animate={hasRendered} />
+              <Logo3D />
             )}
             
             {showMascot && (
