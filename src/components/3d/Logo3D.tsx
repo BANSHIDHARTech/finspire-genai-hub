@@ -1,105 +1,87 @@
 
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Text } from '@react-three/drei';
+import { Text, MeshWobbleGeometry } from '@react-three/drei';
 import * as THREE from 'three';
 
-interface Logo3DProps {
-  animate?: boolean;
-}
+const Logo3D = () => {
+  const logoRef = useRef<THREE.Group>(null);
+  const textRef = useRef<THREE.Mesh>(null);
 
-const Logo3D: React.FC<Logo3DProps> = ({ animate = true }) => {
-  // Fixed ref types to match their component types
-  const groupRef = useRef<THREE.Group>(null);
-  const chatBubbleRef = useRef<THREE.Mesh>(null);
-  const arrowRef = useRef<THREE.Mesh>(null);
-  const rupeeGroupRef = useRef<THREE.Group>(null);
-  
-  useFrame((state, delta) => {
-    if (!animate) return;
-    
-    if (groupRef.current) {
-      // Minimal animation for stability
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.1) * 0.03;
+  useFrame((state) => {
+    if (logoRef.current) {
+      logoRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
     }
-    
-    if (chatBubbleRef.current) {
-      // Reduced animation
-      chatBubbleRef.current.scale.setScalar(0.95 + Math.sin(state.clock.elapsedTime * 0.5) * 0.02);
-    }
-    
-    if (arrowRef.current) {
-      // Minimal rotation
-      arrowRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.5) * 0.02;
-    }
-    
-    if (rupeeGroupRef.current) {
-      // Very gentle animations
-      rupeeGroupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.05;
-      rupeeGroupRef.current.position.y = 0.7 + Math.sin(state.clock.elapsedTime * 0.2) * 0.01;
+    if (textRef.current) {
+      textRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.02;
     }
   });
-  
+
   return (
-    <group ref={groupRef} position={[0, 0, 0]}>
-      {/* Chat bubble - simplified geometry */}
-      <mesh ref={chatBubbleRef} position={[-0.5, 0, 0]}>
-        <sphereGeometry args={[0.6, 6, 6, 0, Math.PI * 2, 0, Math.PI * 0.6]} />
-        <meshStandardMaterial color="#2A3F88" roughness={0.7} metalness={0.1} />
-        <mesh position={[-0.4, -0.4, 0]}>
-          <sphereGeometry args={[0.2, 4, 4]} />
-          <meshStandardMaterial color="#2A3F88" roughness={0.7} metalness={0.1} />
-        </mesh>
+    <group ref={logoRef} position={[0, 0, 0]}>
+      {/* Main navy sphere */}
+      <mesh position={[0, 0, 0]}>
+        <MeshWobbleGeometry args={[0.8, 64, 64]} factor={0.1} speed={1} />
+        <meshStandardMaterial color="#2a3f88" />
       </mesh>
       
-      {/* Rising arrow - simplified */}
-      <mesh ref={arrowRef} position={[0.3, 0.2, 0]} rotation={[0, 0, Math.PI / 4]}>
-        <cylinderGeometry args={[0.05, 0.05, 1, 4]} />
-        <meshStandardMaterial color="#FFD700" roughness={0.5} metalness={0.3} />
-        <mesh position={[0, 0.5, 0]} rotation={[0, 0, Math.PI / 4]}>
-          <coneGeometry args={[0.15, 0.3, 4]} />
-          <meshStandardMaterial color="#FFD700" roughness={0.5} metalness={0.3} />
-        </mesh>
+      {/* Gold ring */}
+      <mesh position={[0, 0, 0]} rotation={[Math.PI / 4, 0, 0]}>
+        <torusGeometry args={[1, 0.1, 16, 100]} />
+        <meshStandardMaterial color="#ffd700" />
       </mesh>
       
-      {/* Rupee symbol - in a group */}
-      <group ref={rupeeGroupRef} position={[0, 0.5, 0]}>
-        <mesh>
-          <cylinderGeometry args={[0.35, 0.35, 0.1, 8]} />
-          <meshStandardMaterial color="#00C9B1" roughness={0.5} metalness={0.2} />
-        </mesh>
+      {/* Teal accent ring */}
+      <mesh position={[0, 0, 0]} rotation={[0, Math.PI / 4, Math.PI / 2]}>
+        <torusGeometry args={[1.1, 0.05, 16, 100]} />
+        <meshStandardMaterial color="#00c9b1" />
+      </mesh>
+      
+      {/* Chat bubble icon */}
+      <mesh position={[-0.2, 0.2, 0.6]}>
+        <sphereGeometry args={[0.15, 32, 32]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+      
+      {/* Trending up arrow */}
+      <mesh position={[0.3, 0.1, 0.5]} rotation={[0, 0, Math.PI / 4]}>
+        <boxGeometry args={[0.3, 0.05, 0.05]} />
+        <meshStandardMaterial color="#ffd700" />
+      </mesh>
+      
+      {/* Arrow head */}
+      <mesh position={[0.4, 0.2, 0.5]} rotation={[0, 0, Math.PI / 4]}>
+        <coneGeometry args={[0.08, 0.15, 3]} />
+        <meshStandardMaterial color="#ffd700" />
+      </mesh>
+      
+      {/* Rupee symbol */}
+      <group ref={textRef}>
         <Text
           font="/fonts/Inter_Regular.json"
           position={[-0.15, -0.05, 0.06]}
           fontSize={0.3}
-          height={0.01}
         >
           ₹
-          <meshStandardMaterial color="#ffffff" roughness={0.5} metalness={0.2} />
+          <meshStandardMaterial color="#00c9b1" />
         </Text>
       </group>
       
-      {/* Reduced number of particles */}
-      {[...Array(2)].map((_, i) => (
-        <mesh 
-          key={i} 
-          position={[
-            Math.sin(i * Math.PI) * 1.2,
-            Math.cos(i * Math.PI) * 1.2,
-            0
-          ]}
-          scale={[0.06, 0.06, 0.06]}
-        >
-          <sphereGeometry args={[1, 4, 4]} />
-          <meshStandardMaterial 
-            color={i % 2 === 0 ? "#FFD700" : "#00C9B1"} 
-            emissive={i % 2 === 0 ? "#FFD700" : "#00C9B1"}
-            emissiveIntensity={0.2}
-            roughness={0.7}
-            metalness={0.1}
-          />
-        </mesh>
-      ))}
+      {/* Company name */}
+      <Text
+        font="/fonts/Inter_Regular.json"
+        position={[0, -1.2, 0]}
+        fontSize={0.2}
+        anchorX="center"
+        anchorY="middle"
+      >
+        Finspire
+        <meshStandardMaterial color="#2a3f88" />
+      </Text>
+      
+      {/* Ambient light for the logo */}
+      <ambientLight intensity={0.6} />
+      <pointLight position={[2, 2, 2]} intensity={1} />
     </group>
   );
 };
